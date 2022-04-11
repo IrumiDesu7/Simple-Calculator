@@ -8,8 +8,10 @@ const operatorButtons = document.querySelectorAll('.operators');
 const currentOperationScreen = document.getElementById('currentOperation');
 const shadowOperationScreen = document.getElementById('shadowOperation');
 const equalButton = document.getElementById('equal');
+const clearButton = document.getElementById('clear');
 
 equalButton.addEventListener('click', evaluate);
+clearButton.addEventListener('click', clear);
 
 numberButtons.forEach((button) =>
   button.addEventListener('click', () => appendNumber(button.textContent))
@@ -52,6 +54,14 @@ function evaluate() {
   );
   shadowOperationScreen.textContent = `${firstOperand} ${currentOperation} ${secondOperand} =`;
   currentOperation = null;
+}
+
+function clear() {
+  firstOperand = '';
+  secondOperand = '';
+  currentOperation = null;
+  currentOperationScreen.textContent = '0';
+  shadowOperationScreen.textContent = '';
 }
 
 function add(a, b) {
