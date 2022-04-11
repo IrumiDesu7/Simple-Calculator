@@ -1,44 +1,58 @@
-const numberButtons = document.querySelectorAll('.numbers');
-const currentOperation = document.querySelector('.current-operation');
-const clearButton = document.querySelector('.backspace');
-const equalButton = document.querySelector('.equal');
-const operatorButtons = document.querySelectorAll('.operators');
-currentOperation.textContent = 0;
-let liveOperation = ''; //The on-going operation, only works on 1 operation
-let shadowOperation = ''; //Kind of like the history of the whole operations
+let currentOperation = null;
 let firstOperand = '';
 let secondOperand = '';
-let operationArray = [];
+let shouldResetScreen = false;
 
-numberButtons.forEach((e) => {
-  e.addEventListener('click', function showNumber() {
-    if (currentOperation.textContent == 0) {
-      currentOperation.textContent = currentOperation.textContent.replace(
-        '0',
-        ''
-      );
-    }
-    liveOperation = currentOperation.textContent += e.textContent;
-    // console.log(liveOperation);
-  });
-});
+const numberButtons = document.querySelectorAll('.numbers');
+const operatorButtons = document.querySelectorAll('.operators');
+const currentOperationScreen = document.getElementById('currentOperation');
+const shadowOperationScreen = document.getElementById('shadowOperation');
+const equalButton = document.getElementById('equal');
 
-operatorButtons.forEach((e) => {
-  e.addEventListener('click', function () {
-    operationArray.push(liveOperation);
-    operationArray.push(e.textContent);
-    currentOperation.textContent = 0;
-    console.log(operationArray);
-  });
-});
+equalButton.addEventListener('click', evaluate);
 
-equalButton.addEventListener('click', function () {
-  operationArray.push(liveOperation);
-  operator = operationArray[1];
-  a = operationArray[0];
-  b = operationArray[2];
-  currentOperation.textContent = operate(operator, a, b);
-});
+numberButtons.forEach((button) =>
+  button.addEventListener('click', () => appendNumber(button.textContent))
+);
+
+operatorButtons.forEach((button) =>
+  button.addEventListener('click', () => setOperation(button.textContent))
+);
+
+function appendNumber(number) {
+  if (currentOperationScreen.textContent === '0' || shouldResetScreen)
+    resetScreen();
+  currentOperationScreen.textContent += number;
+}
+
+function resetScreen() {
+  currentOperationScreen.textContent = '';
+  shouldResetScreen = false;
+}
+
+function setOperation(operator) {
+  if (currentOperation !== null) evaluate();
+  firstOperand = currentOperationScreen.textContent;
+  currentOperation = operator;
+  shadowOperationScreen.textContent = `${firstOperand} ${currentOperation}`;
+  shouldResetScreen = true;
+}
+
+function evaluate() {
+  if (currentOperation === null || shouldResetScreen) return;
+  if (currentOperation === '÷' && currentOperationScreen.textContent === '0') {
+    alert('Cannot divide by zero');
+    return;
+  }
+  secondOperand = currentOperationScreen.textContent;
+  currentOperationScreen.textContent = operate(
+    currentOperation,
+    firstOperand,
+    secondOperand
+  );
+  shadowOperationScreen.textContent = `${firstOperand} ${currentOperation} ${secondOperand} =`;
+  currentOperation = null;
+}
 
 function add(a, b) {
   return a + b;
@@ -53,7 +67,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-  return a - b;
+  return a / b;
 }
 
 function operate(operator, a, b) {
@@ -67,8 +81,8 @@ function operate(operator, a, b) {
     case 'x':
       return multiply(a, b);
     case '÷':
-      return divide(a, b);
-
+      if (b === 0) return null;
+      else return divide(a, b);
     default:
       return null;
   }
