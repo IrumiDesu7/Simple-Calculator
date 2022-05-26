@@ -2,6 +2,7 @@ const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const calcDisplay = document.querySelector('.screen');
 const equalButton = document.querySelector('.equal');
+const clearButton = document.querySelector('.clear');
 let firstOperand = '';
 let secondOperand = '';
 let result = '';
@@ -16,29 +17,37 @@ function operate(operator, a, b) {
       return a + b;
     case '-':
       return a - b;
-    case '*':
+    case 'x':
       return a * b;
     case '÷':
       return a / b;
   }
 }
 
+clearButton.addEventListener('click', function () {
+  firstOperand = '';
+  secondOperand = '';
+  result = '';
+  firstTime = true;
+  operation = [];
+  calcDisplay.textContent = 0;
+});
+
 numberButtons.forEach((element) => {
   element.addEventListener('click', function () {
     if (firstTime) {
       firstOperand += this.textContent;
       calcDisplay.textContent = firstOperand;
-      operation.push(firstOperand);
     } else {
       secondOperand += this.textContent;
       calcDisplay.textContent = secondOperand;
-      operation.push(secondOperand);
     }
   });
 });
 
 operatorButtons.forEach((element) => {
   element.addEventListener('click', function () {
+    operation.push(firstOperand);
     operation.push(this.textContent);
     calcDisplay.textContent = this.textContent;
     firstTime = false;
@@ -46,7 +55,7 @@ operatorButtons.forEach((element) => {
 });
 
 equalButton.addEventListener('click', function () {
-  console.log(operation);
+  operation.push(secondOperand);
   result = operate(operation[1], operation[0], operation[2]);
   calcDisplay.textContent = result;
 });
