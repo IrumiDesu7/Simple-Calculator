@@ -1,0 +1,44 @@
+* {
+  /* border: 1px solid aqua; */
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title h1 {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.screen,
+.result {
+  width: auto;
+  height: 44px;
+  font-size: 2rem;
+  text-align: right;
+}
+
+button {
+  width: 70px;
+  height: 70px;
+  font-size: 1.2rem;
+  border: 0;
+  margin: 2px;
+}
+
+button:active {
+  background-color: rgb(107, 85, 57);
+}
