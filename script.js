@@ -82,7 +82,6 @@ equalButton.addEventListener('click', function () {
   firstOperand = result;
   secondOperand = '';
   operation = [result];
-  firstTime = true;
   operationOnGoing = true;
 });
 
