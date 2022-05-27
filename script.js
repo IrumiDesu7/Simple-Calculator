@@ -26,7 +26,7 @@ function operate(operator, a, b) {
   }
 }
 
-clearButton.addEventListener('click', () => {
+const clearAll = () => {
   firstOperand = '';
   secondOperand = '';
   result = '';
@@ -35,7 +35,9 @@ clearButton.addEventListener('click', () => {
   operation = [];
   calcDisplay.textContent = '|';
   resultDisplay.textContent = '|';
-});
+};
+
+clearButton.addEventListener('click', clearAll);
 
 numberButtons.forEach((element) => {
   element.addEventListener('click', function () {
@@ -45,11 +47,12 @@ numberButtons.forEach((element) => {
     } else {
       secondOperand += this.textContent;
       calcDisplay.textContent = `${firstOperand} ${operation[1]} ${secondOperand}`;
-      resultDisplay.textContent = operate(
+      resultDisplay.textContent = result = operate(
         operation[1],
         operation[0],
         secondOperand
       );
+      operationOnGoing = true;
     }
   });
 });
@@ -62,9 +65,11 @@ operatorButtons.forEach((element) => {
       calcDisplay.textContent = `${firstOperand} ${this.textContent}`;
       firstTime = false;
     } else {
+      firstOperand = result;
+      secondOperand = '';
+      operation = [result];
       operation.push(this.textContent);
       calcDisplay.textContent = `${firstOperand} ${this.textContent}`;
-      firstTime = false;
     }
   });
 });
@@ -82,7 +87,10 @@ equalButton.addEventListener('click', function () {
 });
 
 document.addEventListener('click', () => {
+  console.log('first operand : ', firstOperand);
+  console.log('second operand : ', secondOperand);
   console.log('operation array : ', operation);
   console.log('is this the first operation : ', firstTime);
   console.log('is the operation on going : ', operationOnGoing);
+  console.log('current result : ', result);
 });
