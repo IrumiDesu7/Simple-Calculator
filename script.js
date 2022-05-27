@@ -2,7 +2,6 @@ const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const calcDisplay = document.querySelector('.screen');
 const resultDisplay = document.querySelector('.result');
-
 const equalButton = document.querySelector('.equal');
 const clearButton = document.querySelector('.clear');
 let firstOperand = '';
@@ -27,13 +26,15 @@ function operate(operator, a, b) {
   }
 }
 
-clearButton.addEventListener('click', function () {
+clearButton.addEventListener('click', () => {
   firstOperand = '';
   secondOperand = '';
   result = '';
   firstTime = true;
+  operationOnGoing = false;
   operation = [];
-  calcDisplay.textContent = 0;
+  calcDisplay.textContent = '|';
+  resultDisplay.textContent = '|';
 });
 
 numberButtons.forEach((element) => {
@@ -44,6 +45,11 @@ numberButtons.forEach((element) => {
     } else {
       secondOperand += this.textContent;
       calcDisplay.textContent = `${firstOperand} ${operation[1]} ${secondOperand}`;
+      resultDisplay.textContent = operate(
+        operation[1],
+        operation[0],
+        secondOperand
+      );
     }
   });
 });
@@ -67,6 +73,7 @@ equalButton.addEventListener('click', function () {
   operation.push(secondOperand);
   result = operate(operation[1], operation[0], operation[2]);
   calcDisplay.textContent = result;
+  resultDisplay.textContent = '|';
   firstOperand = result;
   secondOperand = '';
   operation = [result];
@@ -74,4 +81,8 @@ equalButton.addEventListener('click', function () {
   operationOnGoing = true;
 });
 
-document.addEventListener('click', () => console.log(operation));
+document.addEventListener('click', () => {
+  console.log('operation array : ', operation);
+  console.log('is this the first operation : ', firstTime);
+  console.log('is the operation on going : ', operationOnGoing);
+});
