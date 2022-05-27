@@ -4,6 +4,7 @@ const calcDisplay = document.querySelector('.screen');
 const resultDisplay = document.querySelector('.result');
 const equalButton = document.querySelector('.equal');
 const clearButton = document.querySelector('.clear');
+const backspaceButton = document.querySelector('.backspace');
 let firstOperand = '';
 let secondOperand = '';
 let result = '';
@@ -38,6 +39,24 @@ const clearAll = () => {
 };
 
 clearButton.addEventListener('click', clearAll);
+
+backspaceButton.addEventListener('click', (e) => {
+  if (operation.length > 1) {
+    calcDisplay.textContent = calcDisplay.textContent.slice(0, -1);
+    secondOperand = `${secondOperand}`;
+    secondOperand = secondOperand.slice(0, -1);
+    resultDisplay.textContent = result = operate(
+      operation[1],
+      operation[0],
+      secondOperand
+    );
+  } else {
+    firstOperand = calcDisplay.textContent = calcDisplay.textContent.slice(
+      0,
+      -1
+    );
+  }
+});
 
 numberButtons.forEach((element) => {
   element.addEventListener('click', function () {
@@ -81,15 +100,16 @@ equalButton.addEventListener('click', function () {
   resultDisplay.textContent = '|';
   firstOperand = result;
   secondOperand = '';
-  operation = [result];
+  operation = [`${result}`];
   operationOnGoing = true;
 });
 
+// This commented section was used for debugging. Might delete it later, or not.
 document.addEventListener('click', () => {
   console.log('first operand : ', firstOperand);
   console.log('second operand : ', secondOperand);
   console.log('operation array : ', operation);
-  console.log('is this the first operation : ', firstTime);
-  console.log('is the operation on going : ', operationOnGoing);
-  console.log('current result : ', result);
+  //   console.log('is this the first operation : ', firstTime);
+  //   console.log('is the operation on going : ', operationOnGoing);
+  //   console.log('current result : ', result);
 });
