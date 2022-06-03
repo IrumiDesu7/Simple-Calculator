@@ -1,3 +1,3 @@
 # Simple-Calculator
-This is a simple calculator made by me 
-<br>Live Demo <a href = "https://irumidesu7.github.io/Simple-Calculator/">here</a>
+This is a simple calculator made by me
+Simply clone the repo and open the html file from your browser
